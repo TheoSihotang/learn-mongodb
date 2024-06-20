@@ -18,26 +18,35 @@ const movieSchema = new mongoose.Schema({
     rating: Number,
 });
 
-// const movie = new Movie({
-//     title: "Haikyuu",
-//     year: 2024,
-//     genre: "Anime",
-//     actors: [
-//         "Hinata",
-//         "Kageyama",
-//         "Tsukishima",
-//         "Daichi",
-//         "Nishinoya",
-//         "Tanaka",
-//         "Bokuto",
-//         "Kenma",
-//         "Kuroo",
-//         "Oikawa",
-//         "Ushijima",
-//     ],
-//     synopsis: `Determined to be like the volleyball championship's star player nicknamed "the small giant", Shoyo joins his school's volleyball club.`,
-//     rating: 10,
-// });
+movieSchema.pre("save", async function () {
+    console.log("Ready to save");
+});
+
+movieSchema.post("save", async function () {
+    console.log("Successfully saved");
+});
+
+const Movie = mongoose.model("Movie", movieSchema);
+const movie = new Movie({
+    title: "Haikyuu",
+    year: 2024,
+    genre: "Anime",
+    actors: [
+        "Hinata",
+        "Kageyama",
+        "Tsukishima",
+        "Daichi",
+        "Nishinoya",
+        "Tanaka",
+        "Bokuto",
+        "Kenma",
+        "Kuroo",
+        "Oikawa",
+        "Ushijima",
+    ],
+    synopsis: `Determined to be like the volleyball championship's star player nicknamed "the small giant", Shoyo joins his school's volleyball club.`,
+    rating: 10,
+});
 
 // custom method untuk mengubah value agar tidak panjang querynya dan untuk memisahkan antara logic dan query
 
@@ -64,21 +73,21 @@ const update = async (id) => {
 // update('667403a447d1765c99e79db8')
 
 // static method untuk mengubah value agar tidak panjang querynya dan untuk memisahkan antara logic dan query
-movieSchema.statics.updateOneMovie = function () {
-    return this.findByIdAndUpdate("667403a447d1765c99e79db8", {
-        year: 2019,
-        rating: 9.5,
-    });
-};
-const Movie = mongoose.model("Movie", movieSchema);
+// movieSchema.statics.updateOneMovie = function () {
+//     return this.findByIdAndUpdate("667403a447d1765c99e79db8", {
+//         year: 2019,
+//         rating: 9.5,
+//     });
+// };
+// const Movie = mongoose.model("Movie", movieSchema);
 
-Movie.updateOneMovie()
-    .then((result) => {
-        console.log(result);
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+// Movie.updateOneMovie()
+//     .then((result) => {
+//         console.log(result);
+//     })
+//     .catch((err) => {
+//         console.log(err);
+//     });
 
 // find data
 // Movie.findOne({actors : {$in : ['Eren', 'Mikasa']}})
@@ -89,15 +98,17 @@ Movie.updateOneMovie()
 //         console.log(err);
 //     });
 
+// Middleware mongodb
+
 // insert satu data
-// movie
-//     .save()
-//     .then(() => {
-//         console.log("successfully saved");
-//     })
-//     .catch((err) => {
-//         console.log(err);
-//     });
+movie
+    .save()
+    .then(() => {
+        console.log("successfully saved");
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 
 // insert banyak data
 // Movie.insertMany([
